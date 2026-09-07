@@ -219,6 +219,90 @@
         }
 
 
+        .choice-group {
+
+            display: grid;
+
+            gap: 10px;
+
+            margin-top: 12px;
+
+        }
+
+
+        .choice-option {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 12px 14px;
+
+            border: 1px solid #d5dae0;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            background: white;
+
+        }
+
+
+        .choice-option input {
+
+            width: auto;
+
+            margin: 0;
+
+        }
+
+
+        .sub-card {
+
+            margin-top: 18px;
+
+            padding: 18px;
+
+            background: #f8fafc;
+
+            border: 1px solid #e1e5ea;
+
+            border-radius: 12px;
+
+        }
+
+
+        .sub-card-title {
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            margin-bottom: 14px;
+
+        }
+
+
+        .hasil-nkp-awal {
+
+            margin-top: 15px;
+
+            padding: 14px;
+
+            background: white;
+
+            border: 1px solid #d5dae0;
+
+            border-radius: 10px;
+
+        }
+
+
         .hint {
 
             font-size: 12px;
@@ -562,55 +646,171 @@
 
             </div>
 
-            Masukkan Nilai
+            NKP Awal
 
         </div>
 
 
-        <div class="grid">
+        <label>
+
+            Apakah Anda sudah mengetahui NKP Awal?
+
+        </label>
 
 
-            <div>
+        <div class="choice-group">
 
-                <label>
-
-                    NKP Awal
-
-                </label>
-
+            <label class="choice-option">
 
                 <input
-                    type="number"
-                    id="nkpAwal"
-                    min="0"
-                    max="120"
-                    step="any"
-                    placeholder="Contoh: 114.50"
+                    type="radio"
+                    name="sumberNKP"
+                    value="sudah"
+                    checked
+                    onchange="ubahSumberNKP()"
                 >
+
+                Saya sudah mengetahui NKP Awal
+
+            </label>
+
+
+            <label class="choice-option">
+
+                <input
+                    type="radio"
+                    name="sumberNKP"
+                    value="belum"
+                    onchange="ubahSumberNKP()"
+                >
+
+                Saya belum mengetahui NKP Awal
+
+            </label>
+
+        </div>
+
+
+        <div id="inputNKPManual" style="margin-top:18px;">
+
+            <label>
+
+                NKP Awal
+
+            </label>
+
+
+            <input
+                type="number"
+                id="nkpAwal"
+                min="0"
+                max="120"
+                step="any"
+                placeholder="Contoh: 114,42"
+            >
+
+        </div>
+
+
+        <div id="kalkulatorNKPAwal" class="sub-card" style="display:none;">
+
+            <div class="sub-card-title">
+
+                Hitung NKP Awal
 
             </div>
 
 
+            <div class="grid">
 
-            <div>
+                <div>
 
-                <label>
+                    <label>
 
-                    NKO
+                        NHK
 
-                </label>
+                    </label>
 
 
-                <input
-                    type="number"
-                    id="nko"
-                    min="0"
-                    max="120"
-                    step="any"
-                    placeholder="Contoh: 110.99"
-                >
+                    <input
+                        type="number"
+                        id="nhk"
+                        min="0"
+                        max="120"
+                        step="any"
+                        placeholder="0"
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>
+
+                        NPK
+
+                    </label>
+
+
+                    <input
+                        type="number"
+                        id="npk"
+                        min="0"
+                        max="120"
+                        step="any"
+                        placeholder="0"
+                    >
+
+                </div>
 
             </div>
+
+
+            <div class="buttons">
+
+                <button
+                    type="button"
+                    class="btn-hitung"
+                    onclick="hitungNKPAwal()"
+                >
+
+                    Hitung NKP Awal
+
+                </button>
+
+            </div>
+
+
+            <div id="hasilNKPAwal"></div>
+
+        </div>
+
+
+
+        <div style="margin-top:22px;">
+
+            <label>
+
+                NKO
+
+            </label>
+
+
+            <input
+                type="number"
+                id="nko"
+                min="0"
+                max="120"
+                step="any"
+                placeholder="Contoh: 109,33"
+            >
+
+        </div>
+
+
+        <div class="grid" style="margin-top:14px;">
+
 
 
 
@@ -744,6 +944,142 @@
 <script>
 
 
+function ubahSumberNKP() {
+
+
+    const sumber = document.querySelector('input[name="sumberNKP"]:checked').value;
+
+    const manual = document.getElementById("inputNKPManual");
+
+    const kalkulator = document.getElementById("kalkulatorNKPAwal");
+
+
+    if (sumber === "belum") {
+
+        manual.style.display = "none";
+
+        kalkulator.style.display = "block";
+
+    } else {
+
+        manual.style.display = "block";
+
+        kalkulator.style.display = "none";
+
+    }
+
+}
+
+
+function hitungNKPAwal() {
+
+
+    let nhk = Number(document.getElementById("nhk").value);
+
+    let npk = Number(document.getElementById("npk").value);
+
+
+    if (!Number.isFinite(nhk) || !Number.isFinite(npk)) {
+
+        document.getElementById("hasilNKPAwal").innerHTML = `
+
+            <div class="error">
+
+                Mohon isi NHK dan NPK terlebih dahulu
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    if (nhk < 0 || nhk > 120 || npk < 0 || npk > 120) {
+
+        document.getElementById("hasilNKPAwal").innerHTML = `
+
+            <div class="error">
+
+                NHK dan NPK harus berada antara 0 sampai 120
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    // Nilai <= 100 tidak dikalibrasi.
+    // Nilai > 100 dikalibrasi dari skala maksimum 120 menjadi maksimum 115.
+    function kalibrasi(nilai) {
+
+        if (nilai <= 100) {
+
+            return nilai;
+
+        }
+
+        return 100 + ((nilai - 100) * (115 - 100) / (120 - 100));
+
+    }
+
+
+    let nhkKalibrasi = kalibrasi(nhk);
+
+    let npkKalibrasi = kalibrasi(npk);
+
+
+    let nkpAwal =
+
+        (nhkKalibrasi * 0.75)
+
+        +
+
+        (npkKalibrasi * 0.25);
+
+
+    document.getElementById("nkpAwal").value = nkpAwal;
+
+
+    document.getElementById("hasilNKPAwal").innerHTML = `
+
+        <div class="hasil-nkp-awal">
+
+            <div class="hasil-label">
+
+                NKP Awal
+
+            </div>
+
+
+            <div style="font-size:30px;font-weight:bold;margin-top:5px;">
+
+                ${nkpAwal.toFixed(2)}
+
+            </div>
+
+
+            <div class="hint">
+
+                NHK terkalibrasi: ${nhkKalibrasi.toFixed(2)}
+
+                &nbsp;|&nbsp;
+
+                NPK terkalibrasi: ${npkKalibrasi.toFixed(2)}
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
 function hitungNKP() {
 
 
@@ -789,6 +1125,17 @@ function hitungNKP() {
     // =========================
     // VALIDASI
     // =========================
+
+    const sumberNKP = document.querySelector('input[name="sumberNKP"]:checked').value;
+
+    if (sumberNKP === "belum" && !document.getElementById("nkpAwal").value) {
+
+        tampilError("Silakan hitung NKP Awal terlebih dahulu");
+
+        return;
+
+    }
+
 
     if (
         !Number.isFinite(nkpAwal) ||
@@ -1260,6 +1607,13 @@ function tampilError(pesan) {
 function resetForm() {
 
 
+    document.querySelector('input[name="sumberNKP"][value="sudah"]').checked = true;
+
+    document.getElementById("inputNKPManual").style.display = "block";
+
+    document.getElementById("kalkulatorNKPAwal").style.display = "none";
+
+
     document.getElementById("nkpAwal").value = "";
 
     document.getElementById("nko").value = "";
@@ -1269,6 +1623,12 @@ function resetForm() {
     document.getElementById("dampakHukdis").value = "0";
 
     document.getElementById("koreksi").value = "0";
+
+    document.getElementById("nhk").value = "";
+
+    document.getElementById("npk").value = "";
+
+    document.getElementById("hasilNKPAwal").innerHTML = "";
 
     document.getElementById("hasil").innerHTML = "";
 
