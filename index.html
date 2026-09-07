@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Kalkulator NKP</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f3f6fa;
+
+            color: #1f2937;
+
+            min-height: 100vh;
+
+            padding: 30px 15px;
+
+        }
+
+
+        .container {
+
+            max-width: 700px;
+
+            margin: auto;
+
+        }
+
+
+        /* HEADER */
+
+        .header {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 18px;
+
+            border: 1px solid #e1e5ea;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .instansi {
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            color: #555;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .judul {
+
+            font-size: 30px;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .subjudul {
+
+            font-size: 14px;
+
+            color: #666;
+
+            line-height: 1.5;
+
+        }
+
+
+
+        /* CARD */
+
+        .card {
+
+            background: white;
+
+            padding: 22px;
+
+            border-radius: 16px;
+
+            border: 1px solid #e1e5ea;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        /* STEP */
+
+        .step-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .step-number {
+
+            width: 30px;
+
+            height: 30px;
+
+            background: #e8eef7;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: bold;
+
+        }
+
+
+
+        /* FORM */
+
+        label {
+
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            margin-bottom: 6px;
+
+        }
+
+
+        input,
+        select {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #d5dae0;
+
+            border-radius: 9px;
+
+            font-size: 16px;
+
+            background: white;
+
+        }
+
+
+        input:focus,
+        select:focus {
+
+            outline: none;
+
+            border-color: #667eea;
+
+        }
+
+
+        .grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 14px;
+
+        }
+
+
+        .input-group {
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .hint {
+
+            font-size: 12px;
+
+            color: #777;
+
+            margin-top: 5px;
+
+        }
+
+
+
+        /* BUTTON */
+
+        .buttons {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 20px;
+
+        }
+
+
+        button {
+
+            padding: 13px 18px;
+
+            border-radius: 9px;
+
+            border: none;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        .btn-hitung {
+
+            flex: 1;
+
+            background: #3949ab;
+
+            color: white;
+
+        }
+
+
+        .btn-reset {
+
+            background: #eeeeee;
+
+            color: #333;
+
+        }
+
+
+        button:hover {
+
+            opacity: 0.9;
+
+        }
+
+
+
+        /* HASIL */
+
+        .hasil {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 16px;
+
+            border: 1px solid #e1e5ea;
+
+        }
+
+
+        .hasil-title {
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .hasil-label {
+
+            font-size: 13px;
+
+            color: #777;
+
+        }
+
+
+        .nilai-akhir {
+
+            font-size: 48px;
+
+            font-weight: bold;
+
+            margin-top: 5px;
+
+        }
+
+
+        .predikat {
+
+            font-size: 23px;
+
+            font-weight: bold;
+
+            margin-top: 10px;
+
+        }
+
+
+        .rincian {
+
+            margin-top: 25px;
+
+            border-top: 1px solid #ddd;
+
+            padding-top: 15px;
+
+        }
+
+
+        .baris {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            padding: 10px 0;
+
+            border-bottom: 1px solid #eee;
+
+            font-size: 14px;
+
+        }
+
+
+        .baris:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        .formula {
+
+            margin-top: 18px;
+
+            padding: 15px;
+
+            background: #f5f6f8;
+
+            border-radius: 10px;
+
+            font-family: monospace;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+        }
+
+
+        .error {
+
+            background: #fff1f1;
+
+            border: 1px solid #ffd2d2;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            color: #a00;
+
+            font-size: 14px;
+
+        }
+
+
+
+        /* HP */
+
+        @media (max-width: 550px) {
+
+            body {
+
+                padding: 15px 10px;
+
+            }
+
+
+            .header {
+
+                padding: 22px;
+
+            }
+
+
+            .judul {
+
+                font-size: 25px;
+
+            }
+
+
+            .card {
+
+                padding: 18px;
+
+            }
+
+
+            .grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .nilai-akhir {
+
+                font-size: 40px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="instansi">
+
+            KPU Bea Cukai Tipe A Tanjung Priok
+
+        </div>
+
+
+        <div class="judul">
+
+            Kalkulator NKP
+
+        </div>
+
+
+        <div class="subjudul">
+
+            Simulasi perhitungan Nilai Kinerja Pegawai
+
+            berdasarkan KMK-127 Tahun 2026
+
+        </div>
+
+    </div>
+
+
+
+    <!-- STEP 1 -->
+
+    <div class="card">
+
+        <div class="step-title">
+
+            <div class="step-number">
+
+                1
+
+            </div>
+
+            Kelompok Jabatan
+
+        </div>
+
+
+        <label>
+
+            Pilih kelompok jabatan
+
+        </label>
+
+
+        <select id="jabatan">
+
+            <option value="atas">
+
+                Eselon II, Eselon III, dan JF Setara
+
+            </option>
+
+
+            <option value="bawah">
+
+                Eselon IV, Pelaksana, dan JF Setara
+
+            </option>
+
+        </select>
+
+    </div>
+
+
+
+    <!-- STEP 2 -->
+
+    <div class="card">
+
+        <div class="step-title">
+
+            <div class="step-number">
+
+                2
+
+            </div>
+
+            Masukkan Nilai
+
+        </div>
+
+
+        <div class="grid">
+
+
+            <div>
+
+                <label>
+
+                    NKP Awal
+
+                </label>
+
+
+                <input
+                    type="number"
+                    id="nkpAwal"
+                    min="0"
+                    max="120"
+                    step="any"
+                    placeholder="Contoh: 114.427788239"
+                >
+
+            </div>
+
+
+
+            <div>
+
+                <label>
+
+                    NKO
+
+                </label>
+
+
+                <input
+                    type="number"
+                    id="nko"
+                    min="0"
+                    max="120"
+                    step="any"
+                    placeholder="Contoh: 109.33"
+                >
+
+            </div>
+
+
+
+            <div>
+
+                <label>
+
+                    Nilai Hukdis
+
+                </label>
+
+
+                <input
+                    type="number"
+                    id="hukdis"
+                    min="0"
+                    step="any"
+                    value="0"
+                >
+
+
+                <div class="hint">
+
+                    Isi 0 jika tidak ada
+
+                </div>
+
+            </div>
+
+
+
+            <div>
+
+                <label>
+
+                    Nilai Dampak Hukdis
+
+                </label>
+
+
+                <input
+                    type="number"
+                    id="dampakHukdis"
+                    min="0"
+                    step="any"
+                    value="0"
+                >
+
+
+                <div class="hint">
+
+                    Isi 0 jika tidak ada
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div style="margin-top:14px">
+
+
+            <label>
+
+                Nilai Koreksi
+
+            </label>
+
+
+            <input
+                type="number"
+                id="koreksi"
+                min="-5"
+                max="5"
+                step="any"
+                value="0"
+                placeholder="-5 sampai +5"
+            >
+
+
+            <div class="hint">
+
+                Nilai koreksi dapat berupa -5 sampai +5
+
+            </div>
+
+        </div>
+
+
+
+        <div class="buttons">
+
+
+            <button
+                class="btn-hitung"
+                onclick="hitungNKP()"
+            >
+
+                Hitung NKP
+
+            </button>
+
+
+            <button
+                class="btn-reset"
+                onclick="resetForm()"
+            >
+
+                Reset
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- HASIL -->
+
+    <div id="hasil"></div>
+
+
+</div>
+
+
+
+<script>
+
+
+function hitungNKP() {
+
+
+    // =========================
+    // AMBIL NILAI
+    // =========================
+
+    let nkpAwal =
+        Number(
+            document.getElementById("nkpAwal").value
+        );
+
+
+    let nko =
+        Number(
+            document.getElementById("nko").value
+        );
+
+
+    let hukdis =
+        Number(
+            document.getElementById("hukdis").value
+        );
+
+
+    let dampakHukdis =
+        Number(
+            document.getElementById("dampakHukdis").value
+        );
+
+
+    let koreksi =
+        Number(
+            document.getElementById("koreksi").value
+        );
+
+
+    let jabatan =
+        document.getElementById("jabatan").value;
+
+
+
+    // =========================
+    // VALIDASI
+    // =========================
+
+    if (
+        !Number.isFinite(nkpAwal) ||
+        !Number.isFinite(nko) ||
+        !Number.isFinite(hukdis) ||
+        !Number.isFinite(dampakHukdis) ||
+        !Number.isFinite(koreksi)
+    ) {
+
+        tampilError(
+            "Mohon isi seluruh nilai terlebih dahulu"
+        );
+
+        return;
+
+    }
+
+
+
+    if (
+        nkpAwal < 0 ||
+        nkpAwal > 120 ||
+        nko < 0 ||
+        nko > 120
+    ) {
+
+        tampilError(
+            "NKP Awal dan NKO harus berada antara 0 sampai 120"
+        );
+
+        return;
+
+    }
+
+
+
+    if (
+        hukdis < 0 ||
+        dampakHukdis < 0
+    ) {
+
+        tampilError(
+            "Nilai Hukdis dan Nilai Dampak Hukdis tidak boleh negatif"
+        );
+
+        return;
+
+    }
+
+
+
+    if (
+        koreksi < -5 ||
+        koreksi > 5
+    ) {
+
+        tampilError(
+            "Nilai Koreksi harus berada antara -5 sampai +5"
+        );
+
+        return;
+
+    }
+
+
+
+    // =========================
+    // HITUNG NKP DASAR
+    // =========================
+
+    let nkpDasar =
+        nkpAwal
+        - hukdis
+        - dampakHukdis
+        + koreksi;
+
+
+
+    // =========================
+    // TENTUKAN BOBOT
+    // =========================
+
+    let bobotAwal;
+
+    let bobotNKO;
+
+    let formula;
+
+
+
+    // ESELON II / III / JF SETARA
+
+    if (jabatan === "atas") {
+
+
+        if (nkpDasar >= nko) {
+
+            bobotAwal = 0.50;
+
+            bobotNKO = 0.50;
+
+            formula =
+                "50% × NKP Dasar + 50% × NKO";
+
+        }
+
+        else {
+
+            bobotAwal = 0.90;
+
+            bobotNKO = 0.10;
+
+            formula =
+                "90% × NKP Dasar + 10% × NKO";
+
+        }
+
+    }
+
+
+
+    // ESELON IV / PELAKSANA / JF SETARA
+
+    else {
+
+
+        if (nkpDasar >= nko) {
+
+            bobotAwal = 0.70;
+
+            bobotNKO = 0.30;
+
+            formula =
+                "70% × NKP Dasar + 30% × NKO";
+
+        }
+
+        else {
+
+            bobotAwal = 0.90;
+
+            bobotNKO = 0.10;
+
+            formula =
+                "90% × NKP Dasar + 10% × NKO";
+
+        }
+
+    }
+
+
+
+    // =========================
+    // HITUNG NKP AKHIR
+    // =========================
+
+    let nkpAkhir =
+        (bobotAwal * nkpDasar)
+        +
+        (bobotNKO * nko);
+
+
+
+    // =========================
+    // PREDIKAT
+    // =========================
+
+    let predikat;
+
+
+    if (nkpAkhir >= 115) {
+
+        predikat =
+            "Sangat Istimewa";
+
+    }
+
+    else if (nkpAkhir >= 110) {
+
+        predikat =
+            "Istimewa";
+
+    }
+
+    else if (nkpAkhir >= 100) {
+
+        predikat =
+            "Tinggi";
+
+    }
+
+    else if (nkpAkhir >= 90) {
+
+        predikat =
+            "Sedang";
+
+    }
+
+    else {
+
+        predikat =
+            "Rendah";
+
+    }
+
+
+
+    // =========================
+    // FORMAT KOREKSI
+    // =========================
+
+    let koreksiTampil =
+        koreksi >= 0
+        ? "+" + koreksi.toFixed(2)
+        : koreksi.toFixed(2);
+
+
+
+    // =========================
+    // TAMPILKAN HASIL
+    // =========================
+
+    document.getElementById("hasil").innerHTML = `
+
+
+        <div class="hasil">
+
+
+            <div class="step-title">
+
+                <div class="step-number">
+
+                    3
+
+                </div>
+
+                Hasil Perhitungan
+
+            </div>
+
+
+
+            <div class="hasil-label">
+
+                NKP Akhir
+
+            </div>
+
+
+            <div class="nilai-akhir">
+
+                ${nkpAkhir.toFixed(2)}
+
+            </div>
+
+
+
+            <div class="predikat">
+
+                ${predikat}
+
+            </div>
+
+
+            <div class="hasil-label">
+
+                Predikat
+
+            </div>
+
+
+
+            <div class="rincian">
+
+
+                <div class="baris">
+
+                    <span>
+
+                        NKP Awal
+
+                    </span>
+
+                    <strong>
+
+                        ${nkpAwal.toFixed(2)}
+
+                    </strong>
+
+                </div>
+
+
+
+                <div class="baris">
+
+                    <span>
+
+                        Nilai Hukdis
+
+                    </span>
+
+                    <strong>
+
+                        − ${hukdis.toFixed(2)}
+
+                    </strong>
+
+                </div>
+
+
+
+                <div class="baris">
+
+                    <span>
+
+                        Nilai Dampak Hukdis
+
+                    </span>
+
+                    <strong>
+
+                        − ${dampakHukdis.toFixed(2)}
+
+                    </strong>
+
+                </div>
+
+
+
+                <div class="baris">
+
+                    <span>
+
+                        Nilai Koreksi
+
+                    </span>
+
+                    <strong>
+
+                        ${koreksiTampil}
+
+                    </strong>
+
+                </div>
+
+
+
+                <div class="baris">
+
+                    <span>
+
+                        <strong>
+
+                            NKP Dasar
+
+                        </strong>
+
+                    </span>
+
+                    <strong>
+
+                        ${nkpDasar.toFixed(2)}
+
+                    </strong>
+
+                </div>
+
+
+
+                <div class="baris">
+
+                    <span>
+
+                        NKO
+
+                    </span>
+
+                    <strong>
+
+                        ${nko.toFixed(2)}
+
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="formula">
+
+
+                <strong>
+
+                    Formula yang digunakan
+
+                </strong>
+
+
+                <br><br>
+
+
+                ${formula}
+
+
+                <br><br>
+
+
+                ${bobotAwal * 100}%
+
+                ×
+
+                ${nkpDasar.toFixed(2)}
+
+
+                +
+
+
+                ${bobotNKO * 100}%
+
+                ×
+
+                ${nko.toFixed(2)}
+
+
+                =
+
+
+                <strong>
+
+                    ${nkpAkhir.toFixed(2)}
+
+                </strong>
+
+
+            </div>
+
+
+        </div>
+
+    `;
+
+}
+
+
+
+function tampilError(pesan) {
+
+
+    document.getElementById("hasil").innerHTML = `
+
+        <div class="hasil">
+
+            <div class="error">
+
+                ${pesan}
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+
+function resetForm() {
+
+
+    document.getElementById("nkpAwal").value = "";
+
+    document.getElementById("nko").value = "";
+
+    document.getElementById("hukdis").value = "0";
+
+    document.getElementById("dampakHukdis").value = "0";
+
+    document.getElementById("koreksi").value = "0";
+
+    document.getElementById("hasil").innerHTML = "";
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>
