@@ -836,10 +836,49 @@
             font-size: 15px;
             font-weight: bold;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transform: translateZ(0);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
 
         .popup-button:hover {
-            opacity: 0.9;
+            opacity: 0.95;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 12px rgba(57, 73, 171, 0.22);
+        }
+
+        .popup-button:active {
+            transform: translateY(0) scale(0.985);
+        }
+
+        .popup-button::after {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(0);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .popup-button.splash::after {
+            left: var(--splash-x);
+            top: var(--splash-y);
+            animation: buttonSplash 0.42s ease-out;
+        }
+
+        @keyframes buttonSplash {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0.65;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(18);
+                opacity: 0;
+            }
         }
 
         @keyframes popupMuncul {
@@ -854,6 +893,45 @@
         }
 
     </style>
+
+
+<style id="button-feedback-style">
+.action-feedback {
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0);
+  transition: transform .12s ease, box-shadow .18s ease, filter .18s ease;
+}
+.action-feedback.is-clicked {
+  transform: scale(.97);
+  filter: brightness(.94);
+}
+.action-feedback.is-clicked::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  left: var(--click-x, 50%);
+  top: var(--click-y, 50%);
+  transform: translate(-50%, -50%) scale(0);
+  background: rgba(255,255,255,.42);
+  animation: actionRipple .42s ease-out;
+  pointer-events: none;
+}
+@keyframes actionRipple {
+  to {
+    transform: translate(-50%, -50%) scale(18);
+    opacity: 0;
+  }
+}
+.action-feedback.is-processing {
+  filter: brightness(.97);
+}
+.action-feedback.is-processing .button-label {
+  opacity: .85;
+}
+</style>
 
 </head>
 
@@ -889,7 +967,7 @@
                 resmi
             </div>
 
-            <button class="popup-button" onclick="tutupPopup()">
+            <button class="popup-button" onclick="tutupPopup(event)">
                 Saya Mengerti
             </button>
         </div>
@@ -1121,7 +1199,7 @@
 
                 <button
                     type="button"
-                    class="btn-hitung"
+                    class="btn-hitung action-feedback"
                     onclick="hitungNKPAwal()"
                 >
 
@@ -1257,7 +1335,7 @@
 
 
             <button
-                class="btn-hitung"
+                class="btn-hitung action-feedback"
                 onclick="hitungNKP()"
             >
 
@@ -1267,7 +1345,7 @@
 
 
             <button
-                class="btn-reset"
+                class="btn-reset action-feedback"
                 onclick="resetForm()"
             >
 
@@ -1291,7 +1369,7 @@
 
         <strong>Kalkulator NKP</strong> · KPU Bea Cukai Tipe A Tanjung Priok<br>
 
-        Alat bantu simulasi perhitungan berdasarkan KMK-127 Tahun 2026
+        Sarana pendukung simulasi perhitungan NKP berdasarkan KMK-127 Tahun 2026
 
     </div>
 
@@ -1338,13 +1416,65 @@ function hitungNKPAwal() {
     let npk = Number(document.getElementById("npk").value);
 
 
+    /* Nilai 0 dianggap sebagai isian yang valid */
+    const nilaiNHK = document.getElementById("nhk").value.trim();
+    const nilaiNPK = document.getElementById("npk").value.trim();
+
+    if (nilaiNHK === "" && nilaiNPK === "") {
+
+        document.getElementById("hasilNKPAwal").innerHTML = `
+
+            <div class="error">
+
+                Silahkan isi NHK dan NPK
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+    if (nilaiNHK === "") {
+
+        document.getElementById("hasilNKPAwal").innerHTML = `
+
+            <div class="error">
+
+                Silahkan isi NHK
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+    if (nilaiNPK === "") {
+
+        document.getElementById("hasilNKPAwal").innerHTML = `
+
+            <div class="error">
+
+                Silahkan isi NPK
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
     if (!Number.isFinite(nhk) || !Number.isFinite(npk)) {
 
         document.getElementById("hasilNKPAwal").innerHTML = `
 
             <div class="error">
 
-                Mohon isi NHK dan NPK terlebih dahulu
+                Mohon isi NHK dan NPK dengan nilai yang valid
 
             </div>
 
@@ -1487,7 +1617,16 @@ function hitungNKP() {
 
     const sumberNKP = document.querySelector('input[name="sumberNKP"]:checked').value;
 
-    if (sumberNKP === "belum" && !document.getElementById("nkpAwal").value) {
+    /* =========================
+       VALIDASI ISIAN WAJIB
+       ========================= */
+
+    const nilaiNKPAwal = document.getElementById("nkpAwal").value.trim();
+    const nilaiNKO = document.getElementById("nko").value.trim();
+
+    /* Jika NKP Awal dihitung dari NHK/NPK,
+       pastikan perhitungannya sudah dilakukan */
+    if (sumberNKP === "belum" && nilaiNKPAwal === "") {
 
         tampilError("Silakan hitung NKP Awal terlebih dahulu");
 
@@ -1495,6 +1634,31 @@ function hitungNKP() {
 
     }
 
+    /* Cek NKP Awal dan NKO secara spesifik.
+       Nilai 0 tetap dianggap sudah diisi */
+    if (nilaiNKPAwal === "" && nilaiNKO === "") {
+
+        tampilError("Silahkan isi NKP Awal dan NKO");
+
+        return;
+
+    }
+
+    if (nilaiNKPAwal === "") {
+
+        tampilError("Silahkan isi NKP Awal");
+
+        return;
+
+    }
+
+    if (nilaiNKO === "") {
+
+        tampilError("Silahkan isi NKO");
+
+        return;
+
+    }
 
     if (
         !Number.isFinite(nkpAwal) ||
@@ -1935,6 +2099,8 @@ function hitungNKP() {
 
     `;
 
+
+    scrollToNkpResult();
 }
 
 
@@ -1993,12 +2159,95 @@ function resetForm() {
 
 
 
-        function tutupPopup() {
-            document.getElementById("popupInformasi").style.display = "none";
+        function tutupPopup(event) {
+            const tombol = event.currentTarget;
+
+            // Efek ripple/splash dari titik klik
+            const rect = tombol.getBoundingClientRect();
+            tombol.style.setProperty("--splash-x", (event.clientX - rect.left) + "px");
+            tombol.style.setProperty("--splash-y", (event.clientY - rect.top) + "px");
+
+            tombol.classList.remove("splash");
+            void tombol.offsetWidth;
+            tombol.classList.add("splash");
+
+            // Tutup popup setelah efek mulai terlihat
+            setTimeout(() => {
+                document.getElementById("popupInformasi").style.display = "none";
+            }, 180);
         }
 
     </script>
 
+
+
+<script id="button-feedback-script">
+(function () {
+  function addButtonFeedback(button) {
+    if (!button || button.dataset.feedbackReady) return;
+    button.dataset.feedbackReady = "1";
+    button.addEventListener("click", function (event) {
+      const rect = button.getBoundingClientRect();
+      button.style.setProperty("--click-x", (event.clientX - rect.left) + "px");
+      button.style.setProperty("--click-y", (event.clientY - rect.top) + "px");
+      button.classList.remove("is-clicked");
+      void button.offsetWidth;
+      button.classList.add("is-clicked");
+      clearTimeout(button._feedbackTimer);
+      button._feedbackTimer = setTimeout(() => {
+        button.classList.remove("is-clicked");
+      }, 430);
+    });
+  }
+
+  function wireActionButtons() {
+    document.querySelectorAll("button").forEach(function (button) {
+      const label = (button.textContent || "").trim().replace(/\s+/g, " ");
+      if (label === "Hitung NKP Awal" || label === "Hitung NKP" || label === "Reset") {
+        button.classList.add("action-feedback");
+        addButtonFeedback(button);
+      }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", wireActionButtons);
+  } else {
+    wireActionButtons();
+  }
+})();
+</script>
+
+
+<script id="result-scroll-helper">
+function scrollToNkpResult() {
+    const hasil = document.getElementById("hasil");
+    if (!hasil || !hasil.innerHTML.trim()) return;
+
+    hasil.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+    hasil.classList.remove("result-focus");
+    void hasil.offsetWidth;
+    hasil.classList.add("result-focus");
+
+    setTimeout(() => {
+        hasil.classList.remove("result-focus");
+    }, 800);
+}
+</script>
+<style id="result-focus-style">
+.result-focus {
+    animation: resultFocus .8s ease-out;
+}
+@keyframes resultFocus {
+    0% { box-shadow: 0 0 0 0 rgba(57, 73, 171, 0); }
+    40% { box-shadow: 0 0 0 7px rgba(57, 73, 171, .12); }
+    100% { box-shadow: 0 0 0 0 rgba(57, 73, 171, 0); }
+}
+</style>
 
 </body>
 
