@@ -51,7 +51,7 @@
 
         .header {
 
-            background: white;
+            background: linear-gradient(135deg, #ffffff 0%, #f7f9fc 100%);
 
             padding: 30px;
 
@@ -60,6 +60,50 @@
             border: 1px solid #e1e5ea;
 
             margin-bottom: 15px;
+
+            box-shadow: 0 8px 24px rgba(31, 41, 55, 0.06);
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+
+        .header::after {
+
+            content: "";
+
+            position: absolute;
+
+            right: -45px;
+
+            top: -55px;
+
+            width: 150px;
+
+            height: 150px;
+
+            border-radius: 50%;
+
+            background: #e8eef7;
+
+            opacity: 0.8;
+
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 16px;
+
+            position: relative;
+
+            z-index: 1;
 
         }
 
@@ -72,7 +116,7 @@
 
             color: #555;
 
-            margin-bottom: 8px;
+            margin-bottom: 6px;
 
         }
 
@@ -138,13 +182,15 @@
 
         .step-number {
 
-            width: 30px;
+            width: 32px;
 
-            height: 30px;
+            height: 32px;
 
-            background: #e8eef7;
+            background: #3949ab;
 
-            border-radius: 50%;
+            color: white;
+
+            border-radius: 10px;
 
             display: flex;
 
@@ -153,6 +199,8 @@
             justify-content: center;
 
             font-weight: bold;
+
+            box-shadow: 0 4px 10px rgba(57, 73, 171, 0.18);
 
         }
 
@@ -385,6 +433,31 @@
 
             border: 1px solid #e1e5ea;
 
+            box-shadow: 0 8px 24px rgba(31, 41, 55, 0.06);
+
+            animation: muncul 0.25s ease-out;
+
+        }
+
+
+        @keyframes muncul {
+
+            from {
+
+                opacity: 0;
+
+                transform: translateY(8px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform: translateY(0);
+
+            }
+
         }
 
 
@@ -394,7 +467,148 @@
 
             font-weight: bold;
 
-            margin-bottom: 20px;
+            margin-bottom: 18px;
+
+        }
+
+
+        .score-card {
+
+            position: relative;
+
+            overflow: hidden;
+
+            text-align: center;
+
+            padding: 26px 18px 24px;
+
+            border-radius: 16px;
+
+            background: linear-gradient(135deg, #3949ab 0%, #5c6bc0 100%);
+
+            color: white;
+
+            margin-bottom: 24px;
+
+            box-shadow: 0 10px 24px rgba(57, 73, 171, 0.22);
+
+        }
+
+
+        .score-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 150px;
+
+            height: 150px;
+
+            border-radius: 50%;
+
+            right: -55px;
+
+            top: -65px;
+
+            background: rgba(255,255,255,0.10);
+
+        }
+
+
+        .score-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 100px;
+
+            height: 100px;
+
+            border-radius: 50%;
+
+            left: -45px;
+
+            bottom: -55px;
+
+            background: rgba(255,255,255,0.08);
+
+        }
+
+
+        .score-label {
+
+            position: relative;
+
+            z-index: 1;
+
+            font-size: 12px;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+
+            opacity: 0.85;
+
+        }
+
+
+        .nilai-akhir {
+
+            position: relative;
+
+            z-index: 1;
+
+            font-size: 56px;
+
+            line-height: 1.1;
+
+            font-weight: 800;
+
+            margin-top: 8px;
+
+            letter-spacing: -1px;
+
+        }
+
+
+        .predikat {
+
+            position: relative;
+
+            z-index: 1;
+
+            display: inline-block;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            margin-top: 10px;
+
+            padding: 7px 15px;
+
+            border-radius: 999px;
+
+            background: rgba(255,255,255,0.18);
+
+            border: 1px solid rgba(255,255,255,0.25);
+
+        }
+
+
+        .score-caption {
+
+            position: relative;
+
+            z-index: 1;
+
+            font-size: 12px;
+
+            margin-top: 10px;
+
+            opacity: 0.78;
 
         }
 
@@ -404,28 +618,6 @@
             font-size: 13px;
 
             color: #777;
-
-        }
-
-
-        .nilai-akhir {
-
-            font-size: 48px;
-
-            font-weight: bold;
-
-            margin-top: 5px;
-
-        }
-
-
-        .predikat {
-
-            font-size: 23px;
-
-            font-weight: bold;
-
-            margin-top: 10px;
 
         }
 
@@ -500,6 +692,29 @@
 
 
 
+        .footer {
+
+            text-align: center;
+
+            padding: 10px 10px 5px;
+
+            color: #8a919c;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+
+        }
+
+
+        .footer strong {
+
+            color: #666;
+
+        }
+
+
+
         /* HP */
 
         @media (max-width: 550px) {
@@ -547,6 +762,97 @@
 
         }
 
+    
+        /* POPUP INFORMASI */
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 9999;
+            backdrop-filter: blur(3px);
+        }
+
+        .popup {
+            width: 100%;
+            max-width: 520px;
+            background: white;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
+            animation: popupMuncul 0.25s ease-out;
+        }
+
+        .popup-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #eef2ff;
+            color: #3949ab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .popup-title {
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        .popup-text {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .popup-warning {
+            margin-top: 16px;
+            padding: 14px 15px;
+            background: #f8fafc;
+            border: 1px solid #e1e5ea;
+            border-radius: 11px;
+            font-size: 13px;
+            line-height: 1.65;
+            color: #4b5563;
+        }
+
+        .popup-button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 13px 18px;
+            border: none;
+            border-radius: 9px;
+            background: #3949ab;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .popup-button:hover {
+            opacity: 0.9;
+        }
+
+        @keyframes popupMuncul {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
     </style>
 
 </head>
@@ -554,6 +860,41 @@
 
 
 <body>
+
+    <!-- POPUP INFORMASI -->
+    <div id="popupInformasi" class="popup-overlay">
+        <div class="popup">
+            <div class="popup-icon">i</div>
+
+            <div class="popup-title">
+                Informasi Penggunaan
+            </div>
+
+            <div class="popup-text">
+                Kalkulator NKP ini dibuat sebagai <strong>alat bantu simulasi
+                perhitungan</strong> Nilai Kinerja Pegawai berdasarkan
+                KMK-127 Tahun 2026
+            </div>
+
+            <div class="popup-warning">
+                <strong>Penting:</strong> Kalkulator ini merupakan alat bantu penghitungan dan <strong>bukan merupakan
+                aplikasi resmi</strong>, alat bantu ini disusun berdasarkan ketentuan pada KMK-127 Tahun 2026
+            </div>
+
+            <div class="popup-warning">
+                Hasil yang ditampilkan hanya digunakan untuk keperluan
+                <strong>simulasi dan estimasi</strong>. Hasil perhitungan ini
+                tidak dapat digunakan sebagai dasar penetapan nilai kinerja
+                pegawai dan dapat berbeda dengan hasil pada sistem/aplikasi
+                resmi
+            </div>
+
+            <button class="popup-button" onclick="tutupPopup()">
+                Saya Mengerti
+            </button>
+        </div>
+    </div>
+
 
 
 <div class="container">
@@ -563,25 +904,34 @@
 
     <div class="header">
 
-        <div class="instansi">
-
-            KPU Bea Cukai Tipe A Tanjung Priok
-
-        </div>
+        <div class="brand">
 
 
-        <div class="judul">
+            <div>
 
-            Kalkulator NKP
+                <div class="instansi">
 
-        </div>
+                    KPU Bea Cukai Tipe A Tanjung Priok
+
+                </div>
 
 
-        <div class="subjudul">
+                <div class="judul">
 
-            Simulasi perhitungan Nilai Kinerja Pegawai
+                    Kalkulator NKP
 
-            berdasarkan KMK-127 Tahun 2026
+                </div>
+
+
+                <div class="subjudul">
+
+                    Simulasi perhitungan Nilai Kinerja Pegawai
+
+                    berdasarkan KMK-127 Tahun 2026
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -937,6 +1287,15 @@
     <div id="hasil"></div>
 
 
+    <div class="footer">
+
+        <strong>Kalkulator NKP</strong> · KPU Bea Cukai Tipe A Tanjung Priok<br>
+
+        Alat bantu simulasi perhitungan berdasarkan KMK-127 Tahun 2026
+
+    </div>
+
+
 </div>
 
 
@@ -1203,7 +1562,7 @@ function hitungNKP() {
 
 
     // =========================
-    // HITUNG NKP DASAR
+    // HITUNG Akumulasi NKP Awal
     // =========================
 
     let nkpDasar =
@@ -1238,7 +1597,7 @@ function hitungNKP() {
             bobotNKO = 0.50;
 
             formula =
-                "50% × NKP Dasar + 50% × NKO";
+                "50% × Akumulasi NKP Awal + 50% × NKO";
 
         }
 
@@ -1249,7 +1608,7 @@ function hitungNKP() {
             bobotNKO = 0.10;
 
             formula =
-                "90% × NKP Dasar + 10% × NKO";
+                "90% × Akumulasi NKP Awal + 10% × NKO";
 
         }
 
@@ -1269,7 +1628,7 @@ function hitungNKP() {
             bobotNKO = 0.30;
 
             formula =
-                "70% × NKP Dasar + 30% × NKO";
+                "70% × Akumulasi NKP Awal + 30% × NKO";
 
         }
 
@@ -1280,7 +1639,7 @@ function hitungNKP() {
             bobotNKO = 0.10;
 
             formula =
-                "90% × NKP Dasar + 10% × NKO";
+                "90% × Akumulasi NKP Awal + 10% × NKO";
 
         }
 
@@ -1378,31 +1737,28 @@ function hitungNKP() {
 
 
 
-            <div class="hasil-label">
+            <div class="score-card">
 
-                NKP Akhir
+                <div class="score-label">
 
-            </div>
+                    NKP Akhir
 
-
-            <div class="nilai-akhir">
-
-                ${nkpAkhir.toFixed(2)}
-
-            </div>
+                </div>
 
 
+                <div class="nilai-akhir">
 
-            <div class="predikat">
+                    ${nkpAkhir.toFixed(2)}
 
-                ${predikat}
-
-            </div>
+                </div>
 
 
-            <div class="hasil-label">
+                <div class="predikat">
 
-                Predikat
+                    ${predikat}
+
+                </div>
+
 
             </div>
 
@@ -1489,7 +1845,7 @@ function hitungNKP() {
 
                         <strong>
 
-                            NKP Dasar
+                            Akumulasi NKP Awal
 
                         </strong>
 
@@ -1636,7 +1992,12 @@ function resetForm() {
 
 
 
-</script>
+
+        function tutupPopup() {
+            document.getElementById("popupInformasi").style.display = "none";
+        }
+
+    </script>
 
 
 </body>
